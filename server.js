@@ -4,7 +4,8 @@ const port = 3000
 
 app.use(express.static('public'))
 
-app.get('/', (req, res) => res.sendFile("public/index.html", { root: __dirname }))
+// express osaa hakea index.html ilman tätä
+//app.get('/', (req, res) => res.sendFile("public/index.html", { root: __dirname }))
 
 app.post('/', (req, res) => console.log("post"))
 
