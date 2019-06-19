@@ -4,9 +4,27 @@ var game = new Chess()
 function onDragStart (source, piece, position, orientation) {
   // do not pick up pieces if the game is over
   if (game.game_over()) return false
-
   // only pick up pieces for White
   if (piece.search(/^b/) !== -1) return false
+}
+
+function onChange () {
+  console.log("Current pos:", game.fen())
+}
+
+function computerMove () {
+  axios.post('/move', {
+    position: game.fen()
+  })
+  .then(function (response) {
+    let newPos = response.data
+    console.log("Response:", newPos);
+    game.move(newPos)
+    board.position(game.fen())
+  })
+  .catch(function (error) {
+    console.log(error);
+  });
 }
 
 function makeRandomMove () {
@@ -32,7 +50,8 @@ function onDrop (source, target) {
   if (move === null) return 'snapback'
 
   // make random legal move for black
-  window.setTimeout(makeRandomMove, 250)
+  //window.setTimeout(makeRandomMove, 250)
+  window.setTimeout(computerMove, 250)
 }
 
 // update the board position after the piece snap
@@ -46,6 +65,7 @@ var config = {
   position: 'start',
   onDragStart: onDragStart,
   onDrop: onDrop,
-  onSnapEnd: onSnapEnd
+  onSnapEnd: onSnapEnd,
+  onChange: onChange
 }
 board = Chessboard('board', config)
