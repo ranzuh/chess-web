@@ -1,6 +1,9 @@
 import chess
 import random
 
+alphabeta_position_count = 0
+minimax_position_count = 0
+
 # returns value of piece, positive for white, negative for black
 def piece_value(piece):
   if piece == None:
@@ -148,8 +151,7 @@ def alpha_beta_decision(board, depth):
   return best_move
 
 #board = chess.Board()
-alphabeta_position_count = 0
-minimax_position_count = 0
+
 
 # board.set_fen("2r2b1k/2R2p2/5N1p/p1p2R2/P7/2P5/1P3PPP/2K5 b - - 0 30")
 # #board.push_san("e4")

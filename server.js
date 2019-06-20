@@ -6,7 +6,8 @@ app.use(express.static('public'))
 app.use(express.json())
 
 // express osaa hakea index.html ilman tätä
-//app.get('/', (req, res) => res.sendFile("public/index.html", { root: __dirname }))
+//app.get('/', (req, res) => console.log("get"))
+
 
 app.post('/move', function (req, res) {
   let oldPos = req.body.position
@@ -25,7 +26,7 @@ function requestMove (pos, callback) {
 
   let newPos = ""
   python.stdout.on('data', (data) => {
-    newPos = data.toString()
+    newPos = JSON.parse(data)
     callback(newPos)
   })
 }

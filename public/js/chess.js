@@ -17,8 +17,8 @@ function computerMove () {
     position: game.fen()
   })
   .then(function (response) {
-    let newPos = response.data
-    console.log("Response:", newPos);
+    let newPos = response.data.move
+    console.log("Response:", response.data);
     game.move(newPos)
     board.position(game.fen())
   })
