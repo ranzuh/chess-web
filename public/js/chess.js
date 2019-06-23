@@ -10,6 +10,7 @@ function onDragStart (source, piece, position, orientation) {
 
 function onChange () {
   console.log("Current pos:", game.fen())
+  updateStatus()
 }
 
 function computerMove () {
@@ -17,10 +18,16 @@ function computerMove () {
     position: game.fen()
   })
   .then(function (response) {
-    let newPos = response.data.move
+    let move = response.data.move
+    let nodes = response.data.nodes_visited
+    let time = response.data.time_elapsed
     console.log("Response:", response.data);
-    game.move(newPos)
+    game.move(move)
     board.position(game.fen())
+    document.querySelector("#time").innerHTML = time.toFixed(2)
+    document.querySelector("#nodes").innerHTML = nodes
+    document.querySelector("#nps").innerHTML = Math.floor(nodes / time)
+
   })
   .catch(function (error) {
     console.log(error);
@@ -60,6 +67,40 @@ function onSnapEnd () {
   board.position(game.fen())
 }
 
+function updateStatus () {
+  var status = ''
+
+  var moveColor = 'White'
+  if (game.turn() === 'b') {
+    moveColor = 'Black'
+  }
+
+  // checkmate?
+  if (game.in_checkmate()) {
+    status = 'Game over, ' + moveColor + ' is in checkmate.'
+  }
+
+  // draw?
+  else if (game.in_draw()) {
+    status = 'Game over, drawn position'
+  }
+
+  // game still on
+  else {
+    status = moveColor + ' to move'
+
+    // check?
+    if (game.in_check()) {
+      status += ', ' + moveColor + ' is in check'
+    }
+  }
+
+  document.querySelector("#status").innerHTML = status
+  document.querySelector("#fen").innerHTML = game.fen()
+  document.querySelector("#pgn").innerHTML = game.pgn()
+
+}
+
 var config = {
   draggable: true,
   position: 'start',
@@ -69,3 +110,5 @@ var config = {
   onChange: onChange
 }
 board = Chessboard('board', config)
+
+

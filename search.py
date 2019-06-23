@@ -137,6 +137,8 @@ def alpha_beta_decision(board, depth):
   moves = list(board.legal_moves)
   best_move = None
   best_value = -99999
+  global alphabeta_position_count
+  alphabeta_position_count = 0
 
   for move in moves:
     #print(board.san(best_move), best_value)
