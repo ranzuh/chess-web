@@ -5,26 +5,47 @@
     <title>My test page</title>
     <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
     <link rel="stylesheet" href="https://unpkg.com/@chrisoakman/chessboardjs@1.0.0/dist/chessboard-1.0.0.min.css" integrity="sha384-q94+BZtLrkL1/ohfjR8c6L+A6qzNH9R2hBLwyoAfu3i/WCvQjzL2RQJ3uNHDISdU" crossorigin="anonymous">
+    <style type="text/css">
+      body {
+        font-family: Arial, Helvetica, sans-serif
+      }
+
+      #flex-container > div {
+        padding: 5px;
+        
+      }
+
+      h1 {
+        padding-left: 10px
+      }
+    </style>
   </head>
   <body>
 
     <h1>Play chess against AI</h1>
-    <div style="display: flex">
-    <div id="board" style="width: 400px"></div>
-    <div>
-      <label>Status:</label>
-      <div id="status">White to move</div>
-      <label>FEN:</label>
-      <div id="fen">rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1</div>
-      <label>PGN:</label>
-      <div id="pgn">-<br></div>
-      <label>Time to move:</label>
-      <div id="time">-<br></div>
-      <label>Nodes:</label>
-      <div id="nodes">-<br></div>
-      <label>Nodes per second:</label>
-      <div id="nps">-<br></div>
+
+    <div id="flex-container" style="display: flex">
+      <div id="board" style="width: 400px"></div>
+      <div>
+        <label>Status:</label>
+        <div id="status">White to move</div>
+        <label>FEN:</label>
+        <div id="fen">rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1</div>
+        <label>PGN:</label>
+        <div id="pgn">-<br></div>
+        <label>Time to move:</label>
+        <div id="time">-<br></div>
+        <label>Nodes:</label>
+        <div id="nodes">-<br></div>
+        <label>Nodes per second:</label>
+        <div id="nps">-<br></div>
+      </div>
     </div>
+
+
+    <div style="padding: 10px">
+      <p>Link to source here:</p>
+      <a href="https://github.com/ranzuh/chess-web">Github</a>
     </div>
     
     
