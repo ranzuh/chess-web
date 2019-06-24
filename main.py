@@ -4,9 +4,13 @@ import search
 import json
 import time
 
-board = chess.Board(sys.argv[1])
+fen = sys.argv[1]
+depth = int(sys.argv[2])
+
+board = chess.Board(fen)
+
 start_time = time.time()
-computer_move = search.alpha_beta_decision(board, 3)
+computer_move = search.alpha_beta_decision(board, depth)
 time_elapsed = time.time() - start_time
 
 #board.push(computer_move)

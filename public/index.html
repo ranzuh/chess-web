@@ -18,6 +18,10 @@
       h1 {
         padding-left: 10px
       }
+
+      #stats > p {
+        margin: 0;
+      }
     </style>
   </head>
   <body>
@@ -26,19 +30,26 @@
 
     <div id="flex-container" style="display: flex">
       <div id="board" style="width: 400px"></div>
-      <div>
-        <label>Status:</label>
+      <div id="stats">
+        <p>Status:</p>
         <div id="status">White to move</div>
-        <label>FEN:</label>
+        <p>FEN:</p>
         <div id="fen">rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1</div>
-        <label>PGN:</label>
+        <p>PGN:</p>
         <div id="pgn">-<br></div>
-        <label>Time to move:</label>
+        <p>Time to move:</p>
         <div id="time">-<br></div>
-        <label>Nodes:</label>
+        <p>Nodes:</p>
         <div id="nodes">-<br></div>
-        <label>Nodes per second:</label>
+        <p>Nodes per second:</p>
         <div id="nps">-<br></div>
+        <p>Search depth:</p>
+        <select id="depth" name="depth">
+          <option>1</option>
+          <option>2</option>
+          <option selected>3</option>
+          <option>4</option>
+        </select>
       </div>
     </div>
 

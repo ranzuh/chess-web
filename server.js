@@ -10,9 +10,22 @@ app.use(express.json())
 
 
 app.post('/move', function (req, res) {
-  let oldPos = req.body.position
-  requestMove(oldPos, (newPos) => {
-    res.send(newPos)
+  let position = req.body.position
+  let depth = req.body.depth
+
+  if(depth > 4) {
+    res.status(400).send("Depth too deep")
+    return false
+  }
+
+  requestMove(position, depth, (move) => {
+
+    if(move === "error"){
+      res.status(400)
+    }
+    else {
+      res.send(move)
+    }
   })
   
 })
@@ -20,14 +33,17 @@ app.post('/move', function (req, res) {
 app.listen(port, () => console.log(`Example app listening on port ${port}!`))
 
 
-function requestMove (pos, callback) {
+function requestMove (pos, depth, callback) {
   const { spawn } = require('child_process');
-  python = spawn('python3', ["main.py", pos])
+  python = spawn('python3', ["main.py", pos, depth])
 
-  let newPos = ""
+  let move = ""
   python.stdout.on('data', (data) => {
-    newPos = JSON.parse(data)
-    callback(newPos)
+    move = JSON.parse(data)
+    callback(move)
+  })
+  python.stderr.on('data', () => {
+    callback("error")
   })
 }
 

@@ -14,8 +14,12 @@ function onChange () {
 }
 
 function computerMove () {
+  let depthSelector = document.getElementById("depth")
+  let depth = depthSelector.options[depthSelector.selectedIndex].value
+
   axios.post('/move', {
-    position: game.fen()
+    position: game.fen(),
+    depth: depth
   })
   .then(function (response) {
     let move = response.data.move
@@ -24,9 +28,9 @@ function computerMove () {
     console.log("Response:", response.data);
     game.move(move)
     board.position(game.fen())
-    document.querySelector("#time").innerHTML = time.toFixed(2)
-    document.querySelector("#nodes").innerHTML = nodes
-    document.querySelector("#nps").innerHTML = Math.floor(nodes / time)
+    document.getElementById("time").innerHTML = time.toFixed(2)
+    document.getElementById("nodes").innerHTML = nodes
+    document.getElementById("nps").innerHTML = Math.floor(nodes / time)
 
   })
   .catch(function (error) {
@@ -58,7 +62,7 @@ function onDrop (source, target) {
 
   // make random legal move for black
   //window.setTimeout(makeRandomMove, 250)
-  window.setTimeout(computerMove, 250)
+  window.setTimeout(computerMove, 0)
 }
 
 // update the board position after the piece snap
