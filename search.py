@@ -109,11 +109,9 @@ def alpha_beta(board, depth, a, b):
   if depth == 0:
     return -evaluation(board)
   
-  moves = list(board.legal_moves)
-
   if board.turn == False: #black
     best_value = -99999
-    for move in moves:
+    for move in board.legal_moves:
       board.push(move)
       best_value = max(best_value, alpha_beta(board, depth - 1, a, b))
       board.pop()
@@ -123,7 +121,7 @@ def alpha_beta(board, depth, a, b):
     return best_value
   else: #white
     best_value = 99999
-    for move in moves:
+    for move in board.legal_moves:
       board.push(move)
       best_value = min(best_value, alpha_beta(board, depth - 1, a, b))
       board.pop()
@@ -134,13 +132,12 @@ def alpha_beta(board, depth, a, b):
 
 # returns best move for black 
 def alpha_beta_decision(board, depth):
-  moves = list(board.legal_moves)
   best_move = None
   best_value = -99999
   global alphabeta_position_count
   alphabeta_position_count = 0
 
-  for move in moves:
+  for move in board.legal_moves:
     #print(board.san(best_move), best_value)
     board.push(move)
     board_value = alpha_beta(board, depth - 1, -99999, 99999)
