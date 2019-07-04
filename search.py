@@ -1,34 +1,47 @@
 import chess
 import random
+import piece_square_tables as pst
 
 alphabeta_position_count = 0
 minimax_position_count = 0
 
 # returns value of piece, positive for white, negative for black
-def piece_value(piece):
+def piece_value(piece, square):
   if piece == None:
       return 0
-  def absolute_value(piece):
+  
+  if piece.color == True:
     if piece.piece_type == chess.PAWN:
-      return 100
+      return 100 + pst.white_pawn[chess.square_mirror(square)]
     elif piece.piece_type == chess.KNIGHT:
-      return 320
+      return 320 + pst.white_knight[chess.square_mirror(square)]
     elif piece.piece_type == chess.BISHOP:
-      return 330
+      return 330 + pst.white_bishop[chess.square_mirror(square)]
     elif piece.piece_type == chess.ROOK:
-      return 500
+      return 500 + pst.white_rook[chess.square_mirror(square)]
     elif piece.piece_type == chess.QUEEN:
-      return 900
+      return 900 + pst.white_queen[chess.square_mirror(square)]
     elif piece.piece_type == chess.KING:
-      return 20000
-  absolute_value = absolute_value(piece)
-  return absolute_value if piece.color == True else -absolute_value
+      return 20000 + pst.white_king[chess.square_mirror(square)]
+  else:
+    if piece.piece_type == chess.PAWN:
+      return -100 - pst.black_pawn[chess.square_mirror(square)]
+    elif piece.piece_type == chess.KNIGHT:
+      return -320 - pst.black_knight[chess.square_mirror(square)]
+    elif piece.piece_type == chess.BISHOP:
+      return -330 - pst.black_bishop[chess.square_mirror(square)]
+    elif piece.piece_type == chess.ROOK:
+      return -500 - pst.black_rook[chess.square_mirror(square)]
+    elif piece.piece_type == chess.QUEEN:
+      return -900 - pst.black_queen[chess.square_mirror(square)]
+    elif piece.piece_type == chess.KING:
+      return -20000 - pst.black_king[chess.square_mirror(square)]
 
 # returns evaluation for the whole board
 def evaluation(board):
   eval = 0
-  for i in range(64):
-    eval += piece_value(board.piece_at(i))
+  for square in range(64):
+    eval += piece_value(board.piece_at(square), square)
   return eval
 
 # random move bot
@@ -110,13 +123,13 @@ def alpha_beta(board, depth, a, b):
     return -evaluation(board)
   
   if board.is_checkmate():
-    return 99999+depth if board.turn else -999999-depth
+    return 99999+depth if board.turn else -99999-depth
   
   if board.is_stalemate() or board.is_insufficient_material():
     return 0
   
   if board.turn == False: #black
-    best_value = -99999
+    best_value = -999999
     for move in board.legal_moves:
       board.push(move)
       best_value = max(best_value, alpha_beta(board, depth - 1, a, b))
@@ -126,7 +139,7 @@ def alpha_beta(board, depth, a, b):
       a = max(a, best_value)
     return best_value
   else: #white
-    best_value = 99999
+    best_value = 999999
     for move in board.legal_moves:
       board.push(move)
       best_value = min(best_value, alpha_beta(board, depth - 1, a, b))
@@ -139,23 +152,24 @@ def alpha_beta(board, depth, a, b):
 # returns best move for black 
 def alpha_beta_decision(board, depth):
   best_move = None
-  best_value = -99999
+  best_value = -999999
   global alphabeta_position_count
   alphabeta_position_count = 0
 
   for move in board.legal_moves:
-    #print(board.san(best_move), best_value)
+    
     board.push(move)
-    board_value = alpha_beta(board, depth - 1, -99999, 99999)
+    board_value = alpha_beta(board, depth - 1, -999999, 999999)
     board.pop()
-    #print("candidate", board_value, move)
+    #print("candidate", board.san(move), board_value)
     if board_value >= best_value:
       best_value = board_value
       best_move = move
+      #print(board.san(best_move), best_value)
   
   return best_move
 
-#board = chess.Board()
+
 
 
 # board.set_fen("2r2b1k/2R2p2/5N1p/p1p2R2/P7/2P5/1P3PPP/2K5 b - - 0 30")
@@ -194,4 +208,5 @@ def alpha_beta_decision(board, depth):
 # move2
 # assert move == move2
 
+#board = chess.Board()
 #play()
