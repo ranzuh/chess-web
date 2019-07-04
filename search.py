@@ -109,6 +109,12 @@ def alpha_beta(board, depth, a, b):
   if depth == 0:
     return -evaluation(board)
   
+  if board.is_checkmate():
+    return 99999+depth if board.turn else -999999-depth
+  
+  if board.is_stalemate() or board.is_insufficient_material():
+    return 0
+  
   if board.turn == False: #black
     best_value = -99999
     for move in board.legal_moves:
