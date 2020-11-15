@@ -13,29 +13,31 @@ app.post('/move', function (req, res) {
   let position = req.body.position
   let depth = req.body.depth
 
-  if(depth > 4) {
+  if (depth > 4) {
     res.status(400).send("Depth too deep")
     return false
   }
 
   requestMove(position, depth, (move) => {
 
-    if(move === "error"){
+    if (move === "error") {
       res.status(400)
-    }
-    else {
+    } else {
       res.send(move)
     }
   })
-  
+
 })
 
 app.listen(process.env.PORT || port, () => console.log(`Example app listening on port ${port}!`))
 
-
-function requestMove (pos, depth, callback) {
-  const { spawn } = require('child_process');
-  python = spawn('python3', ["main.py", pos, depth])
+function requestMove(pos, depth, callback) {
+  const {spawn} = require('child_process');
+  if (process.platform === "win32") {
+    python = spawn('python', ["main.py", pos, depth])
+  } else {
+    python = spawn('python3', ["main.py", pos, depth])
+  }
 
   let move = ""
   python.stdout.on('data', (data) => {
