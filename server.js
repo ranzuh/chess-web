@@ -5,6 +5,9 @@ const port = 3000
 app.use(express.static('public'))
 app.use(express.json())
 
+var cors = require('cors')
+app.use(cors())
+
 // express osaa hakea index.html ilman tätä
 //app.get('/', (req, res) => console.log("get"))
 
